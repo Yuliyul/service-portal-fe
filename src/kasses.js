@@ -12,18 +12,90 @@ import {
     ShowController,
     ShowView,
     FunctionField,
+    Filter,
+    TextInput,
+    ReferenceInput,
+    SelectInput,
+    AutocompleteInput,
 } from 'react-admin';
+import { makeStyles, Chip } from '@material-ui/core';
+import classnames from 'classnames';
+
+const useQuickFilterStyles = makeStyles((theme) => ({
+    chip: {
+        marginBottom: theme.spacing(1),
+    },
+}));
+const boolStyles = makeStyles({
+    on: {
+        fontWeight: 'bold',
+        // This is JSS syntax to target a deeper element using css selector, here the svg icon for this button
+        '& svg': { color: 'green' },
+    },
+    off: {
+        fontWeight: 'bold',
+        // This is JSS syntax to target a deeper element using css selector, here the svg icon for this button
+        '& svg': { color: 'red' },
+    },
+});
+const MyBooleanField = (props) => {
+    const classes = boolStyles();
+    return (
+        <BooleanField
+            className={classnames({
+                [classes.on]: props.record[props.source] == true,
+                [classes.off]: props.record[props.source] == false,
+            })}
+            {...props}
+        />
+    );
+};
+MyBooleanField.defaultProps = BooleanField.defaultProps;
+const QuickFilter = ({ label }) => {
+    // const translate = useTranslate();
+    const classes = useQuickFilterStyles();
+    return <Chip className={classes.chip} label={label} />;
+};
+
+const KasseFilter = (props) => (
+    <Filter {...props}>
+        <TextInput label="Search" source="q" alwaysOn />
+
+        <ReferenceInput
+            label="Domain"
+            source="domainID"
+            reference="domains"
+            sortBy="domainName"
+            sort={{ field: 'domainName', order: 'ASC' }}
+            perPage="500"
+        >
+            <SelectInput optionText="domainName" />
+        </ReferenceInput>
+        <QuickFilter source="tseOn" label="TSE On" defaultValue={true} />
+    </Filter>
+);
 
 export const KassList = (props) => (
-    <List {...props}>
+    <List {...props} bulkActionButtons={false} filters={<KasseFilter />}>
         <Datagrid rowClick="show">
-            {/* <ReferenceField source="_id" reference="s">
-                <TextField source="id" />
-            </ReferenceField> */}
-            <TextField source="domainName" />
-            <NumberField source="kasse" />
-            <BooleanField source="tseOn" />
-            <TextField source="tseModule" />
+            <ReferenceField
+                label="Domain"
+                source="domainID"
+                reference="domains"
+                sort={{ field: 'domainName', order: 'ASC' }}
+                link={false}
+                sortBy="domainName"
+            >
+                <TextField source="domainName" />
+            </ReferenceField>
+            <NumberField label="Kasse ID" source="kasse" />
+            {/* <BooleanField label="TSE on/off" source="tseOn" /> */}
+            <MyBooleanField label="TSE on/off" source="tseOn" />
+            <TextField label="TSE module in use" source="tseModule" />
+            <FunctionField
+                label="Timeouts quantity"
+                render={(record) => `${record.timeouts.length}`}
+            />
         </Datagrid>
     </List>
 );
