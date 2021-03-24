@@ -3,11 +3,15 @@ export default {
     // called when the user attempts to log in
     login: ({ username, password }) => {
         const authObj = { username: username, password: password };
-        const request = new Request('http://localhost:3005/auth/login', {
-            method: 'POST',
-            body: JSON.stringify(authObj),
-            headers: new Headers({ 'Content-Type': 'application/json' }),
-        });
+        // const request = new Request('http://localhost:3005/auth/login', {
+        const request = new Request(
+            'https://service-portal-be.hosting7-p.tn-rechenzentrum1.de/auth/login',
+            {
+                method: 'POST',
+                body: JSON.stringify(authObj),
+                headers: new Headers({ 'Content-Type': 'application/json' }),
+            }
+        );
         return fetch(request)
             .then((response) => {
                 if (response.status < 200 || response.status >= 300) {
