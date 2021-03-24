@@ -39,7 +39,11 @@ const httpClient = (url, options = {}) => {
     return fetchUtils.fetchJson(url, options);
 };
 
-const dataProvider = jsonServerProvider('http://localhost:3005', httpClient);
+// const dataProvider = jsonServerProvider('http://localhost:3005', httpClient);
+const dataProvider = jsonServerProvider(
+    'https://service-portal-be.hosting7-p.tn-rechenzentrum1.de',
+    httpClient
+);
 const App = () => (
     <Admin
         authProvider={authProvider}
