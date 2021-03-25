@@ -5,7 +5,7 @@ export default {
         const authObj = { username: username, password: password };
         // const request = new Request('http://localhost:3005/auth/login', {
         const request = new Request(
-            'https://service-portal-be.hosting7-p.tn-rechenzentrum1.de/auth/login',
+            process.env.REACT_APP_SERVER + '/auth/login',
             {
                 method: 'POST',
                 body: JSON.stringify(authObj),
@@ -15,7 +15,7 @@ export default {
         return fetch(request)
             .then((response) => {
                 if (response.status < 200 || response.status >= 300) {
-                    throw new Error(response.statusText);
+                    throw new Error(response.message);
                 }
                 return response.json();
             })
@@ -25,7 +25,8 @@ export default {
                 return Promise.resolve();
             })
             .catch(() => {
-                throw new Error('Network error');
+                Promise.reject();
+                throw new Error('Wrong credentials');
                 return Promise.reject();
             });
         // localStorage.setItem('username', username);

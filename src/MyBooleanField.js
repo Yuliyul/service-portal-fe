@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { BooleanField } from 'react-admin';
 import { makeStyles } from '@material-ui/core/styles';
-import { classnames } from 'classnames';
-// import LaunchIcon from '@material-ui/icons/Launch';
+// import { classnames } from 'classnames';
+const classnames = require('classnames');
 
 const boolStyles = makeStyles({
     on: {
@@ -28,5 +28,5 @@ const MyBooleanField = (props) => {
         />
     );
 };
-export default MyBooleanField;
 MyBooleanField.defaultProps = BooleanField.defaultProps;
+export default MyBooleanField;

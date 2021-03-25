@@ -8,6 +8,7 @@ import {
     ReferenceInput,
     SelectInput,
 } from 'react-admin';
+import MyBooleanField from './MyBooleanField';
 const DomainFilter = (props) => (
     <Filter {...props}>
         {/* <TextInput label="Search" source="q" alwaysOn /> */}
@@ -22,10 +23,10 @@ export const DomainList = (props) => (
             {/* <ReferenceField source="domainID" reference="domains">
                 <TextField source="domainName" />
             </ReferenceField> */}
-            {/* <TextField source="domainName" /> */}
+
             <TextField source="domainName" />
-            <BooleanField source="fiscal_export_sw" />
-            <BooleanField source="fiscal_export_efr" />
+            <MyBooleanField label="Use our system" source="fiscal_export_sw" />
+            <MyBooleanField label="Use EFR system" source="fiscal_export_efr" />
         </Datagrid>
     </List>
 );

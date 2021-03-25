@@ -14,6 +14,7 @@ import jsonServerProvider from 'ra-data-json-server';
 // import { Login, Layout } from './layout';
 import Dashboard from './Dashboard';
 import { createMuiTheme } from '@material-ui/core/styles';
+require('dotenv').config();
 const myTheme = createMuiTheme({
     overrides: {
         RaDatagrid: {
@@ -39,11 +40,14 @@ const httpClient = (url, options = {}) => {
     return fetchUtils.fetchJson(url, options);
 };
 
-// const dataProvider = jsonServerProvider('http://localhost:3005', httpClient);
 const dataProvider = jsonServerProvider(
-    'https://service-portal-be.hosting7-p.tn-rechenzentrum1.de',
+    process.env.REACT_APP_SERVER,
     httpClient
 );
+// const dataProvider = jsonServerProvider(
+//     'https://service-portal-be.hosting7-p.tn-rechenzentrum1.de',
+//     httpClient
+// );
 const App = () => (
     <Admin
         authProvider={authProvider}
