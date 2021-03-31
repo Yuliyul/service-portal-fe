@@ -2,9 +2,9 @@ import * as React from 'react';
 import {
     Admin,
     Resource,
-    ListGuesser,
     fetchUtils,
     EditGuesser,
+    resolveBrowserLocale,
 } from 'react-admin';
 import authProvider from './authProvider';
 // import simpleRestProvider from 'ra-data-simple-rest';
@@ -14,15 +14,32 @@ import jsonServerProvider from 'ra-data-json-server';
 // import { Login, Layout } from './layout';
 import Dashboard from './Dashboard';
 import { createMuiTheme } from '@material-ui/core/styles';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
+import germanMessages from 'ra-language-german';
 require('dotenv').config();
+
+// import polyglotI18nProvider from 'ra-i18n-polyglot';
+
+const messages = {
+    de: germanMessages,
+    en: englishMessages,
+};
+const i18nProvider = polyglotI18nProvider(
+    (locale) => (messages[locale] ? messages[locale] : messages.en),
+    resolveBrowserLocale()
+);
+// const i18nProvider = polyglotI18nProvider(() => germanMessages, 'de');
 const myTheme = createMuiTheme({
+    palette: {
+        type: 'dark', // Switching the dark mode on is a single property value change.
+    },
     overrides: {
         RaDatagrid: {
             headerCell: {
                 fontWeight: 'bold',
             },
         },
-
         MuiAppBar: {
             colorSecondary: {
                 backgroundColor: '#2196f3',
@@ -52,8 +69,9 @@ const App = () => (
     <Admin
         authProvider={authProvider}
         dataProvider={dataProvider}
-        Dashboard={Dashboard}
+        dashboard={Dashboard}
         theme={myTheme}
+        i18nProvider={i18nProvider}
     >
         <Resource
             name="kasses"

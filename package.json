@@ -9,6 +9,7 @@
         "dotenv": "^8.2.0",
         "prop-types": "^15.7.2",
         "ra-data-json-server": "^3.13.1",
+        "ra-language-german": "^3.13.4",
         "react": "^17.0.1",
         "react-admin": "^3.13.1",
         "react-dom": "^17.0.1",

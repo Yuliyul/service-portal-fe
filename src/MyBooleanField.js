@@ -21,8 +21,8 @@ const MyBooleanField = (props) => {
     return (
         <BooleanField
             className={classnames({
-                [classes.on]: props.record[props.source] == true,
-                [classes.off]: props.record[props.source] == false,
+                [classes.on]: props.record[props.source] === true,
+                [classes.off]: props.record[props.source] === false,
             })}
             {...props}
         />
