@@ -17,11 +17,22 @@ import {
     ReferenceInput,
     SelectInput,
     AutocompleteInput,
+    ShowButton,
+    BulkDeleteButton,
+    BulkExportButton,
 } from 'react-admin';
 import { makeStyles, Chip } from '@material-ui/core';
 import classnames from 'classnames';
 import MyBooleanField from './MyBooleanField';
+import RestartButton from './RestartButton';
+import { Fragment } from 'react';
 
+const KasseBulkActionButtons = ({ basePath }) => (
+    <Fragment>
+        <BulkExportButton />
+        <BulkDeleteButton basePath={basePath} />
+    </Fragment>
+);
 const useQuickFilterStyles = makeStyles((theme) => ({
     chip: {
         marginBottom: theme.spacing(1),
@@ -52,7 +63,11 @@ const KasseFilter = (props) => (
 );
 
 export const KassList = (props) => (
-    <List {...props} bulkActionButtons={false} filters={<KasseFilter />}>
+    <List
+        {...props}
+        bulkActionButtons={<KasseBulkActionButtons />}
+        filters={<KasseFilter />}
+    >
         <Datagrid rowClick="show">
             <ReferenceField
                 label="Domain"
@@ -71,7 +86,11 @@ export const KassList = (props) => (
             <FunctionField
                 label="Timeouts quantity"
                 render={(record) => `${record.timeouts.length}`}
+                sort={{ field: 'timeouts_count', order: 'DESC' }}
+                sortBy="timeouts_count"
             />
+            <ShowButton />
+            <RestartButton />
         </Datagrid>
     </List>
 );
@@ -87,7 +106,6 @@ export const KassShow = (props) => (
                             `${record.platform} ${record.osname}  ${record.arch}`
                         }
                     />
-
                     <TextField label="Free system memory" source="freesysmem" />
                     <TextField label="Total system memory" source="totalmem" />
                     <TextField label="Uptime" source="uptime" />
@@ -105,7 +123,6 @@ export const KassShow = (props) => (
                     <TextField label="Chrome version" source="ChVersion" />
                     <TextField source="kasse" />
                     <TextField label="MySql version" source="mysqlversion" />
-
                     {controllerProps.record &&
                         controllerProps.record.printer &&
                         controllerProps.record.printer[0] && (
@@ -116,8 +133,20 @@ export const KassShow = (props) => (
                                 }
                             />
                         )}
-
+                    {controllerProps.record &&
+                        controllerProps.record.tseEFRType && (
+                            <FunctionField
+                                label="TSE type"
+                                render={(record) =>
+                                    record.tseEFRType == 'TSE_SB'
+                                        ? 'SwissBit'
+                                        : 'Deutsche Fiscal Cloud'
+                                }
+                            />
+                        )}
                     <DateField label="Date of update" source="updatedAt" />
+                    here button
+                    <RestartButton />
                 </SimpleShowLayout>
             </ShowView>
         )}
